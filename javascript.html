@@ -1,0 +1,136 @@
+<script>
+function CheckDevelopment(){
+  console.log('CheckDevelopment')
+  google.script.run
+  .withSuccessHandler(processResponse)
+  .checkDevelopeMode()
+};
+
+  function processResponse(developeMode){
+     //document.getElementById("loader").style.display = 'none';
+     //document.getElementById("clearBox").style.display = 'none';
+     if (developeMode == true){
+           var div = document.getElementById('output');
+           div.innerHTML = '<p>Sito in manutenzione. Rivolgersi all\'amministratore</p>';
+        }
+     addList()
+ };
+    
+  function addList() {
+    console.log('addList ran!');
+    //document.getElementById("loader").style.display = 'none';
+    google.script.run
+      .withFailureHandler(onFailure)
+      .withSuccessHandler(populateSelect)
+      .estraiGiornate()
+  };
+  
+  function populateSelect(argReturnedData) { 
+   //aggiunge l'option vuota 
+   //che permette a bootstrap validator 
+   //di non validare il campo se non selezionato
+   
+    argReturnedData.unshift('')  
+    for(var i = 0; i < argReturnedData.length; i++) {
+      var opt = argReturnedData[i];
+      var el = document.createElement("option");
+      el.id = i+1
+      el.text = opt;
+      el.value = opt;
+      $('#selectDate').append($('<option>').text(el.text));
+    };
+    $('.selectpicker').selectpicker('refresh');   
+  };
+
+  function onFailure(err) {
+    console.log('Si è verificato un errore')
+    document.getElementById("loader").style.display = 'none'
+     var div = document.getElementById('output');
+     div.innerHTML = "<p class='line'>Si è verificato un errore <br> " + err +"</p>";
+  };
+
+// intercetta il cambio valore della select (seleziona una data)
+$(function() {
+  $('.selectpicker').on('change', function(){
+    var dateSelected = $(this).find("option:selected").val();
+    console.log("selected= " + dateSelected);
+  })
+});
+
+
+//inizializza bootstrap validator (sembra funzionare anche se nel tag form è presente l'option "data-topggle="validator")
+   
+//attende che il DOM sia completato
+      //sull'evento submit interroga il l'handler di bootstrap validator isDefaultPrevented
+  $(document).ready(function(){
+  //recupera il valore dei radio button
+  
+      $("#myForm").validator()
+
+      $('#myForm').on('submit',function(e){
+      console.log("check if isDefaultPrevented")
+      if (e.isDefaultPrevented()){
+            // esegue il codice nel caso in cui il form non è validato
+            console.log("default prevented")
+      }
+      else
+      {
+      $("#loader").removeClass('hidden');
+      var date = findDate()
+      var mode = findMode()
+      var objParameters = {
+      'date': date,
+      'mode': mode
+      }
+      google.script.run
+       // withSuccessHandler passa alla funzione 'output' il risultato restituito dallo script.run (componiPresenzeEturni)
+       .withSuccessHandler(output)
+       // attraverso il metodo withUserObject si passa un oggetto con gli ulteriori parametri necessari alla funzione gestital da withSuccessHandler
+       .withUserObject(objParameters) 
+       //.withFailureHandler(onFailure)
+       .componiPresenzeEturni(date, mode) 
+      return false // IMPORTANTE!! evita il reinderizzamento ad una pagina bianca
+      }
+      })
+ })    
+
+function findDate(){
+      var dateSelected = $('.selectpicker').find("option:selected").val();
+      console.log(dateSelected)
+      return dateSelected
+ }
+ 
+function findMode(){
+
+var mode = $('input[type="radio"]:checked', '#myForm').val()
+console.log(mode)
+return mode
+}
+
+function output(responseArray,objParameters){
+  var html = responseArray[0]
+  var progressivoRiepilogo = responseArray[1]
+  console.log(progressivoRiepilogo)
+  //responseArray[1] = progressivoRiepilogo)
+  $('#clearBox').prop('disabled', false);
+  $("#loader").addClass('hidden');
+  //$("[type='outputPanel'").each(function(i, objParameters){ 
+   var panelId = 'Riepilogo#'+ progressivoRiepilogo
+    var panelTitle = progressivoRiepilogo + ' - Riepilogo ' + objParameters.mode + " del " + objParameters.date
+   
+    //$("<div type='outputPanel' class='panel panel-default'>  </span>    <div class='panel-heading'>      <h4 class='panel-title' data-toggle='collapse' data-parent='#accordion' data-target='#" + dataTarget + "'> <a class='accordion-toggle'>" + panelTitle +" </a></h4></div><div class='panel-collapse collapse in'><div class='panel-body'>" + html +"</div></div></div>").appendTo("#accordion");
+    $("<div type='outputPanel' class='panel panel-default'>  </span>    <div class='panel-heading'> <h4 class='panel-title'> "+ panelTitle +" </a></h4></div><div id='"+ panelId +"' <div class='panel-body'>" + html +"</div></div></div></div>").appendTo("#accordion");
+  //})
+}
+
+function clearbox(){   
+   $("[type='outputPanel'").remove()
+   console.log('box it was cleared')
+   $('#clearBox').prop('disabled', true);
+}
+
+
+</script>
+<style>
+
+</style>

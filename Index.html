@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<head>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+    
+  <!-- This CSS package applies Google styling; it should always be included. -->
+  <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+  <!-- AGGIUNTI DA RIEPILOGHI-->
+    
+  <meta ID="description" content="">
+  <meta ID="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  <!--jQuery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  
+  <!--BOOTSTRAP-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+  
+  <!--Bootstrap-validator-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+
+  <!--moment.js-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/locale/it.js"></script>
+  
+  <!--Bootstrap-dateTimepicker-->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.css" />
+  
+  <!--loader-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <!-- Bootstrap-select -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
+
+<?!= include('styleCSS'); ?>
+<?!= include('javascript'); ?>
+<?!= include('radioButtonsCSS'); ?>
+
+</head>
+
+<html>
+<!---->
+<body onload=" CheckDevelopment()">
+      <div class="container-fluid">
+      <div class='col-sm-6'>
+         <div class="jumbotron">
+          <h3>Produzione foglio giornaliero presenze e turni contact center <small> ver.2.0 </small></h3>
+         </div>
+         <div id="alert"></div>
+             <form id="myForm" data-toggle="validator" role="form">
+                    <div class="form-group">
+                    <label>Seleziona una data</label>
+                             <select id="selectDate" class="selectpicker form-control" required>
+                                <!--option>Seleziona una data</option-->
+                                <!--viene popolato dalla funzione -->
+                             </select>
+                    </div>
+                   <label text-align='left'>Seleziona il riepilogo desiderato</label>
+                <div class="segmented-control" style="width: 100%; color: #0088cc" >
+                  <input type="radio" name="sc-1-1" id="sc-1-1-1" value="Anteprima" checked required> 
+                  <input type="radio" name="sc-1-1" id="sc-1-1-2" value="Definitivo" required>
+                  <label for="sc-1-1-1" data-value="Anteprima">Anteprima</label>
+                  <label for="sc-1-1-2" data-value="Definitivo">Definitivo</label>
+                </div>
+                <br>
+                <button id ="submitBtn" type="submit" class="btn btn-default" data-disable="true" >Produci <i id='loader' class="fa fa-spinner fa-spin hidden"></i></button>
+                <button id="clearBox" class="btn btn-default" type="button" onclick="clearbox()" value="Cancella risultati" disabled>Cancella risultati</button>
+           </form>
+           <br><br> 
+       <div class="panel-group" id="accordion">
+
+       </div>
+      </div>
+     </div>
+</body>
+</html>
+<script>
+
+             
+</script>
