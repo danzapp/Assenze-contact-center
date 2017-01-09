@@ -16,7 +16,7 @@ personale = 'm.amoroso@aci.it, s.antonielli@aci.it, r.benci@aci.it, i.bonitatibu
 't.santucci@aci.it, m.schiavone@aci.it, e.semprini@aci.it, s.sinigaglia@aci.it, r.sposato@aci.it, f.stamati@aci.it,'+
 'm.sterpetti@aci.it, d.sturniolo@aci.it, l.troisi@aci.it, a.ceolini@aci.it, r.derudas@aci.it, b.falcinelli@aci.it,'+
 'm.fois@aci.it, c.greblo@aci.it, a.musto@aci.it, g.podesta@aci.it, a.vitto@aci.it, da.zappala@aci.it' // 00_Servizio Gestione PRA <
-*/
+*/ 
 
 
 // TEST
@@ -29,4 +29,4 @@ var loader =  '<div id="loader" class="loader">' +
        ' <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>'+
       '</svg> </div>'
 var progressivoRiepilogo = 0 
-      
+    
