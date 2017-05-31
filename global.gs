@@ -8,10 +8,10 @@ var ssAgenda = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/
 
 //PRODUZIONE
 segreteria = 'p.rocchetti@aci.it, g.polidori@aci.it, s.antonielli@aci.it, da.zappala@aci.it, c.greblo@aci.it'
-dirigenti = 'g.brandi@aci.it, a.astuto@aci.it' 
-personale = 'm.amoroso@aci.it, s.antonielli@aci.it, r.benci@aci.it, i.bonitatibus@aci.it, a.cappelli@aci.it,'+
-'cl.conti@aci.it, o.delvecchio@aci.it, r.diblasio@aci.it, r.dominici@aci.it, m.fazzi@aci.it, p.ferrari@aci.it,'+
-'r.formosa@aci.it, s.lauri@aci.it, a.luchetti@aci.it, a.manfroi@aci.it, p.manieri@aci.it, c.moscatelli@aci.it,'+
+dirigenti = 'g.brandi@aci.it, c.massini@aci.it' 
+personale = 'm.amoroso@aci.it, s.antonielli@aci.it, r.benci@aci.it, i.bonitatibus@aci.it, a.cappelli@aci.it, m.ciaccia@aci.it,'+
+'cl.conti@aci.it, s.danieli@aci.it, o.delvecchio@aci.it, r.diblasio@aci.it, r.dimarzio@aci.it, r.dominici@aci.it, m.fazzi@aci.it, p.ferrari@aci.it,'+
+'r.formosa@aci.it, s.lauri@aci.it, f.liantonio@aci.it, a.luchetti@aci.it, a.manfroi@aci.it, p.manieri@aci.it,'+
 'p.piccirilli@aci.it, a.pietrini@aci.it, a.pignataro@aci.it, g.polidori@aci.it, f.putaturo@aci.it, p.rocchetti@aci.it,'+
 't.santucci@aci.it, m.schiavone@aci.it, e.semprini@aci.it, s.sinigaglia@aci.it, r.sposato@aci.it, f.stamati@aci.it,'+
 'm.sterpetti@aci.it, d.sturniolo@aci.it, l.troisi@aci.it, a.ceolini@aci.it, r.derudas@aci.it, b.falcinelli@aci.it,'+

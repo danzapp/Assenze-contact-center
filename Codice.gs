@@ -1,10 +1,11 @@
 function searchUserData(userMail){
-  //userMail="da.zappala@aci.it"
+  //userMail="s.danieli@aci.it"
   
   //cerca i dati anagrifici dell'utente corrente a partire dalla mail
-  var teamId = '14_3UOO85IgrQHUTTTMwmocrLkhXORuaTAWlmCy9wsLA'  // foglio Team
+  //var personaleID = '14_3UOO85IgrQHUTTTMwmocrLkhXORuaTAWlmCy9wsLA'  // foglio Personale
+  var teamId = '14_3UOO85IgrQHUTTTMwmocrLkhXORuaTAWlmCy9wsLA'
   var ss = SpreadsheetApp.openById(teamId)
-  var sheet = ss.getSheetByName('Team')
+  var sheet = ss.getSheetByName('Personale')
   var data = sheet.getDataRange().getValues()
   for (i=0; i<3; i++){
     data.shift()
@@ -17,7 +18,7 @@ function searchUserData(userMail){
       return userName
     }
   }
-  Logger.log(userMail + " non trovata" )
+  Logger.log(userMail + ": indirizzo non trovato" )
 }
 
 
@@ -70,7 +71,7 @@ Logger.log("estraiGiornate " + new Date())
   
 function estraiPersonale() {
   var ssTeam = SpreadsheetApp.openByUrl('https://docs.google.com/a/aci.it/spreadsheets/d/1cZonGEpFtFkV2ABqZL1R5S-BItfeK-PCsRiW1yNHCnM/edit?usp=sharing') // al momento sta usando il foglio Team dallo spreadsheet Contact Center
-  var sheetTeam = ssTeam.getSheetByName('Team')
+  var sheetTeam = ssTeam.getSheetByName('Personale')
   var lastCol = sheetTeam.getLastColumn()
   var lastRow = sheetTeam.getLastRow()
   Logger.log(lastRow)
@@ -117,7 +118,6 @@ Logger.log("assentiByDate")
   var colGiorniAssenza = headers[0].indexOf("Giorni di assenza")
   var colCodiciAssenza = headers[0].indexOf("Codici Assenza")
   var colNote = headers[0].indexOf("Note")
-
   
   var data = sheetAgenda.getRange(firstActiveRow, 1,lastRow,lastCol).getValues()
   
@@ -191,7 +191,14 @@ Logger.log("contactCenterByDate")
   }
   var totaleTurniProgrammati = 0
   
-  var turniNonCoperti
+  var turniNonCoperti = {
+    totale: 0,
+    normativa: 0,
+    procedure: 0,
+    forniture: 0
+  }
+  
+  
   
   // legge i turni normativa dallo sheet
   Logger.log(sheetContact)
@@ -202,12 +209,14 @@ Logger.log("contactCenterByDate")
   for (var i = 0; i<sigleNormativa.length; i++){
     if (sigleNormativa[i]==''){ 
            Logger.log("Turno non coperto")
-           turniNonCoperti =+ 1
+           turniNonCoperti.normativa =+1
            //riepilogoTurni =+ 'Normativa: ' + (3 - sigleNormativa.length) + ' '
        }
+    
        else
        {
           totaleTurniProgrammati =+ 1
+          
        }
    } 
   
@@ -217,7 +226,7 @@ Logger.log("contactCenterByDate")
   for (var i=0; i<sigleProcedure.length; i++){
     if (sigleProcedure[i]==''){ 
            Logger.log("Turno non coperto")
-           turniNonCoperti =+ 1
+           turniNonCoperti.procedure =+ 1
            //riepilogoTurni =+ 'Procedure: ' + (3 - sigleProcedure.length) + ' '
        }
        else
@@ -232,7 +241,7 @@ Logger.log("contactCenterByDate")
   for (var i = 0; i<sigleForniture.length; i++){
    if (sigleForniture[i]==''){ 
            Logger.log("Turno non coperto")
-           turniNonCoperti =+ 1
+           turniNonCoperti.forniture =+ 1
            //riepilogoTurni =+ 'Fornitrue: ' + (3 - sigleForniture.length) + ' '
        }
        else
@@ -241,15 +250,36 @@ Logger.log("contactCenterByDate")
        }
   }
  
-     
- if (turniNonCoperti > 0 ){
-   var riepilogoTurni = 'Attenzione ci sono turni di Contact Center non coperti: ('+ turniNonCoperti+')'
+  turniNonCoperti.totale = turniNonCoperti.normativa + turniNonCoperti.procedure + turniNonCoperti.forniture
+  Logger.log('turniNonCoperti ' + turniNonCoperti.totale)
+  Logger.log('normativa ' + turniNonCoperti.normativa) 
+  Logger.log('procedure ' + turniNonCoperti.procedure) 
+  Logger.log('forniture ' + turniNonCoperti.forniture) 
+  
+ if (turniNonCoperti.totale > 0 ){
+   
+
+   
+   var riepilogoTurni = 'Attenzione ci sono turni di Contact Center non coperti: ' 
+   if (turniNonCoperti.normativa > 0) {
+     riepilogoTurni = riepilogoTurni + 'Normativa: ' + turniNonCoperti.normativa
+   }
+   if (turniNonCoperti.procedure > 0) {
+     riepilogoTurni = riepilogoTurni + 'Procedure: ' + turniNonCoperti.procedure
+   }
+  if (turniNonCoperti.forniture > 0) {
+    riepilogoTurni  = riepilogoTurni +  'Forniture: ' + turniNonCoperti.forniture
+   }
  }
  else
  {
      var riepilogoTurni = "Tutti i turni di Contact Center risultano coperti"
  }
-  
+ Logger.log(riepilogoTurni)
+ 
+ //var messaggio = printConditionalString(costrutto, 'affermativa', turniNonCoperti.totale + 1,0,5,1) 
+
+ 
   Logger.log("Normativa " + sigleNormativa)
   Logger.log("Procedure " + sigleProcedure)
   Logger.log("Forniture " + sigleForniture)
@@ -259,7 +289,7 @@ Logger.log("contactCenterByDate")
   // converti le sigle in Cognome Nome
   
   // leggi le prime 3 colonne di Team
-  var sheetTeam = ssContact.getSheetByName('Team')
+  var sheetTeam = ssContact.getSheetByName('Personale')
   var lastRowTeam = sheetTeam.getLastRow()
   var lastColTeam = sheetTeam.getLastColumn()
   var personale = sheetTeam.getRange(1, 1,lastRowTeam,lastColTeam).getValues()
@@ -267,13 +297,25 @@ Logger.log("contactCenterByDate")
   // cerca sigle in "turnsSign" su "personale" e salva "Cognome Nome" su "turni"
   var turni = []
   for (var i=0; i<turniSigle.length; i++){
-    for (var j=1; j<personale.length; j++){
-      if (turniSigle[i] == personale[j][2]){
-        turni.push(personale [j][0])
+    Logger.log ('i ' + i)
+    if (turniSigle[i] != ''){
+       
+      for (var j=1; j<personale.length; j++){
+        Logger.log ('j ' + j)
+        if (turniSigle[i] == personale[j][2]){
+          turni.push(personale [j][0])
+          Logger.log(personale[j][2])
+        }  
       }
-    } 
+    }
+    else
+    {
+     turni.push('')
+      Logger.log('TURNO VUOTO **********************')
+    }
   }
-
+  Logger.log('turni: ' + turni)
+  Logger.log('riepilogoTurni: ' + riepilogoTurni)
   return [turni, riepilogoTurni]
 }
 
@@ -281,25 +323,28 @@ function componiPresenzeEturni (date, mode){
 
 Logger.log("current User " + user)
 Logger.log("mode " + mode)
-/*
-var htmlWeb = '<p class="line">' + mode + '</p>'
-return htmlWeb
-*/
 
-//Logger.log("componiPresenzeEturni "+ date + " lanciato da " + form.user)
 //var date = "01/05/2017" // inserire una data e togliere il commento per testare la funzione 
 //var mode = 'anteprima'
 //var dateTime = new Date(date).getTime()
 var date = stringToDateComplete(date)
 var dateTime = date.getTime()
 var personale = estraiPersonale()
+
+// esclude specifici nominativi dal foglio presenze
+// Moscatelli in quanto non più in organico SGP
+// personale.splice(17,1)
+
+Logger.log(personale)
+Logger.log(personale.length)
 var assenti = assentiByDate(date)
 var turniArray = contactCenterByDate(date)
 var turni = turniArray[0]
 var contaTurni = turniArray[1]
-Logger.log(turniArray)
-Logger.log(turni)
-Logger.log(contaTurni)
+
+Logger.log('turniArray ' + turniArray)
+Logger.log('turni ' + turni)
+Logger.log('contaTurni ' + contaTurni)
 // crea prospetto presenze giornaliero
 
 // crea la riga intestazioni
@@ -311,13 +356,12 @@ var nominativo = personale[i][0] // salva solo il cognome
 //Logger.log(nominativo + "  scritto su presenzeEturni")
 presenzeEturni.push([nominativo,"","","",""])
 }
-
+Logger.log('Presenze e turni')
+Logger.log(JSON.stringify(presenzeEturni))
 Logger.log ("intestazioni presenzeEturni " + presenzeEturni)
-
-
 // inserisci "X" per gli assenti
 //Logger.log("lunghezza array assenti " + assenti.length)
-for (var i=1; i<assenti.length; i++){
+for (var i=0; i<assenti.length; i++){
   for (var j=0; j<presenzeEturni.length; j++){
     //Logger.log("confronto  " + assenti[i][0] + " con " +  presenzeEturni[j][0]) 
     if (assenti[i][0] == presenzeEturni[j][0]){
@@ -336,26 +380,30 @@ for (var i=1; i<assenti.length; i++){
 // legge i turni e li confronta con le assenze
 incongruenze= new Array // definisci l'array in ambito globale
 Logger.log("turni contact " + turni)
+Logger.log("numeri turni contact " + turni.length)
 for (var i=0; i<turni.length; i++){      
-  for (var j=1; j<presenzeEturni.length; j++){
-    if (turni[i] == presenzeEturni[j][0]){
+  Logger.log(i + ' ' + turni[i])
+  for (var j=0; j<presenzeEturni.length; j++){
     Logger.log("i= "+i + " - " + turni[i] + " j= "+j+ " - " + presenzeEturni[j][0])
-        if (i<3) {
+    if (turni[i] == presenzeEturni[j][0]){
+    switch (true) {    
+      case i<3:
              presenzeEturni[j][3]="Normativa"
+             Logger.log(presenzeEturni[j][3])
              Logger.log(presenzeEturni[j][0] + " segnato come normativa")
-        }
-        else
-        {
-          if (i==3){
+        break;
+      case i==3:
              presenzeEturni[j][3]="Procedure"
+             Logger.log(presenzeEturni[j][3])
              Logger.log(presenzeEturni[j][0] + " segnato come procedure")
-          }
-          else
-          {
+        break;
+
+      case i==4:
              presenzeEturni[j][3]="Forniture"
+             Logger.log(presenzeEturni[j][3])
              Logger.log(presenzeEturni[j][0] + " segnato come forniture")
-          }
-        }
+         break;
+    }
        
        Logger.log (turni[i]  + " segnato come turno contact " + presenzeEturni[j][3])
        // evidenzia i turni assegnati a personale assente 
@@ -374,8 +422,7 @@ for (var i=0; i<turni.length; i++){
   }
  }
 
-Logger.log("presenze e turni compilato " + presenzeEturni)
-
+Logger.log("presenze e turni compilato " + JSON.stringify(presenzeEturni))
 // verifica il modo e avvia la creazione del primo foglio (dirigenti)
 Logger.log("array incogruenze " + incongruenze)
 var destinatari = 'dirigenti'
@@ -536,7 +583,7 @@ Logger.log("mode " + mode)
     switch(destinatari) {
     case 'dirigenti':
         var destA = dirigenti
-        //var destCC = segreteria
+        //var destCC = 'da.zappala@aci.it'
         var msgDestinatari = "Dirigenti"
         break;
     case 'personale':
@@ -552,6 +599,7 @@ Logger.log("mode " + mode)
  
 if (mode=="anteprima"){
   destA=segreteria
+  //destA = 'da.zappala@aci.it'
   var subjectMode = "Anteprima "
   var destCC=''
   var htmlWeb = 
