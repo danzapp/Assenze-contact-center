@@ -85,7 +85,7 @@ $(function() {
       google.script.run
        // withSuccessHandler passa alla funzione 'output' il risultato restituito dallo script.run (componiPresenzeEturni)
        .withSuccessHandler(output)
-       // attraverso il metodo withUserObject si passa un oggetto con gli ulteriori parametri necessari alla funzione gestita da withSuccessHandler
+       // attraverso il metodo withUserObject si passa un oggetto con gli ulteriori parametri necessari alla funzione gestital da withSuccessHandler
        .withUserObject(objParameters) 
        //.withFailureHandler(onFailure)
        .componiPresenzeEturni(date, mode) 
@@ -117,7 +117,9 @@ function output(responseArray,objParameters){
   //$("[type='outputPanel'").each(function(i, objParameters){ 
    var panelId = 'Riepilogo#'+ progressivoRiepilogo
     var panelTitle = progressivoRiepilogo + ' - Riepilogo ' + objParameters.mode + " del " + objParameters.date
-  $("<div type='outputPanel' class='panel panel-default'>  </span>    <div class='panel-heading'> <h4 class='panel-title'> "+ panelTitle +" </a></h4></div><div id='"+ panelId +"' <div class='panel-body'>" + html +"</div></div></div></div>").appendTo("#accordion");
+   
+    //$("<div type='outputPanel' class='panel panel-default'>  </span>    <div class='panel-heading'>      <h4 class='panel-title' data-toggle='collapse' data-parent='#accordion' data-target='#" + dataTarget + "'> <a class='accordion-toggle'>" + panelTitle +" </a></h4></div><div class='panel-collapse collapse in'><div class='panel-body'>" + html +"</div></div></div>").appendTo("#accordion");
+    $("<div type='outputPanel' class='panel panel-default'>  </span>    <div class='panel-heading'> <h4 class='panel-title'> "+ panelTitle +" </a></h4></div><div id='"+ panelId +"' <div class='panel-body'>" + html +"</div></div></div></div>").appendTo("#accordion");
   //})
 }
 
