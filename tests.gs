@@ -2,7 +2,7 @@ function retrieveEmailsFromGoogleContacts(){
 
 var idTeam = '1cZonGEpFtFkV2ABqZL1R5S-BItfeK-PCsRiW1yNHCnM'
 var ss = SpreadsheetApp.openById(idTeam)
-var sheet = ss.getSheetByName('Team')
+var sheet = ss.getSheetByName('Personale')
 
 
 //indicare il numero di righe riservate agli headers
@@ -53,7 +53,7 @@ Logger.log("x = " + x + " - " + cognome)
 function compactEmailsToString(){
   var idTeam = '1cZonGEpFtFkV2ABqZL1R5S-BItfeK-PCsRiW1yNHCnM'
 var ss = SpreadsheetApp.openById(idTeam)
-var sheet = ss.getSheetByName('Team')
+var sheet = ss.getSheetByName('Personale')
 var numRows = sheet.getLastRow()-1
 var numCols = sheet.getLastColumn()-1
 
