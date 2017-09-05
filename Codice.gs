@@ -302,9 +302,9 @@ Logger.log("contactCenterByDate")
        
       for (var j=1; j<personale.length; j++){
         Logger.log ('j ' + j)
-        if (turniSigle[i] == personale[j][2]){
-          turni.push(personale [j][0])
-          Logger.log(personale[j][2])
+        if (turniSigle[i] == personale[j][0]){
+          turni.push(personale [j][1])
+          Logger.log(personale[j][0])
         }  
       }
     }
@@ -359,6 +359,7 @@ presenzeEturni.push([nominativo,"","","",""])
 Logger.log('Presenze e turni')
 Logger.log(JSON.stringify(presenzeEturni))
 Logger.log ("intestazioni presenzeEturni " + presenzeEturni)
+
 // inserisci "X" per gli assenti
 //Logger.log("lunghezza array assenti " + assenti.length)
 for (var i=0; i<assenti.length; i++){
